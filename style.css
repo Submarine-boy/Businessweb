@@ -1133,3 +1133,119 @@ h2 em{
   outline:3px solid var(--focus);
   outline-offset:3px;
 }
+
+
+
+/* =========================
+   MOBILE GALLERY FIX
+   ========================= */
+
+@media (max-width: 700px) {
+
+  .gallery-grid {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    height: 430px !important;
+    min-height: 430px !important;
+    overflow: hidden !important;
+  }
+
+  .gallery-image {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 430px !important;
+    min-height: 430px !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.02);
+
+    transition:
+      opacity .45s ease,
+      transform .6s ease,
+      visibility .45s ease;
+  }
+
+  .gallery-image.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: scale(1) !important;
+    z-index: 2 !important;
+  }
+
+  .gallery-image img {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  .gallery-prev,
+  .gallery-next {
+    display: grid !important;
+    position: absolute !important;
+    top: 50% !important;
+    z-index: 20 !important;
+
+    width: 44px !important;
+    height: 44px !important;
+
+    transform: translateY(-50%) !important;
+
+    border: 1px solid rgba(255,255,255,.55);
+    border-radius: 50%;
+
+    background: rgba(15,23,42,.7);
+    color: white;
+
+    place-items: center;
+    cursor: pointer;
+  }
+
+  .gallery-prev {
+    left: 14px !important;
+  }
+
+  .gallery-next {
+    right: 14px !important;
+  }
+
+  .gallery-dots {
+    display: flex !important;
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 18px !important;
+    z-index: 20 !important;
+
+    transform: translateX(-50%) !important;
+
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gallery-dot {
+    display: block !important;
+    width: 8px !important;
+    height: 8px !important;
+
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.6);
+  }
+
+  .gallery-dot.active {
+    width: 24px !important;
+    border-radius: 10px;
+    background: white;
+  }
+}
