@@ -1,9 +1,7 @@
 /*
  * Restaurant personalization config
- *
- * For a new prospect, change the values below instead of rebuilding the page.
- * Keep customer-facing claims accurate: replace demo details with verified
- * information supplied by the restaurant before sending a personalized demo.
+ * Change the values below for each restaurant prospect.
+ * The theme object controls the complete visual colour system.
  */
 const SITE_CONFIG = {
     brand: {
@@ -34,7 +32,19 @@ const SITE_CONFIG = {
     },
     theme: {
         accent: '#d2c196',
+        accentHover: '#e0d0a8',
         dark: '#24251f',
-        paper: '#f4f0e8'
+        darkSoft: '#303129',
+        textOnDark: '#f7f3eb',
+        mutedOnDark: '#c9c5ba',
+        paper: '#f4f0e8',
+        paperSoft: '#ebe5d9',
+        text: '#24251f',
+        mutedText: '#69685f',
+        card: '#fffdf8',
+        border: 'rgba(36, 37, 31, 0.16)',
+        buttonText: '#24251f',
+        overlay: 'rgba(20, 21, 17, 0.42)',
+        selection: '#d2c196'
     }
 };
