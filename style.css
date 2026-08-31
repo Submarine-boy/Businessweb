@@ -452,71 +452,156 @@ h2 em{
 }
 
 /* =========================
-   GALLERY
+   COME AS YOU ARE GALLERY
    ========================= */
 
-.compact{
-  align-items:end;
-  margin-bottom:45px;
+.gallery-grid {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--paper-soft);
 }
 
-.compact>p{
-  padding-top:0;
+/* Each slide */
+.gallery-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.02);
+  transition:
+    opacity .45s ease,
+    transform .6s ease,
+    visibility .45s ease;
+  overflow: hidden;
 }
 
-/*
-  Desktop:
-  Large image on the left.
-  Two equal images on the right.
-*/
-
-.gallery-grid{
-  display:grid;
-  grid-template-columns:1.35fr 1fr 1fr;
-  grid-template-rows:520px;
-  gap:14px;
-  width:100%;
+/* Active slide */
+.gallery-image.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
 }
 
-.gallery-image{
-  position:relative;
-  width:100%;
-  height:520px;
-  min-width:0;
-  overflow:hidden;
-  background:var(--paper-soft);
-  border-radius:2px;
+.gallery-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
-.gallery-image img{
-  position:absolute;
-  inset:0;
-  display:block;
-  width:100%;
-  height:100%;
-  min-width:100%;
-  min-height:100%;
-  object-fit:cover;
-  object-position:center center;
+/* Navigation buttons */
+.gallery-prev,
+.gallery-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  width: 52px;
+  height: 52px;
+
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 50%;
+
+  background: rgba(15,23,42,.65);
+  color: #fff;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 1.5rem;
+  cursor: pointer;
+
+  backdrop-filter: blur(8px);
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
 }
 
-/*
-  Individual positioning keeps important parts
-  of each photograph visible.
-*/
-
-.gallery-image:nth-child(1) img{
-  object-position:center center;
+.gallery-prev {
+  left: 24px;
 }
 
-.gallery-image:nth-child(2) img{
-  object-position:center 45%;
+.gallery-next {
+  right: 24px;
 }
 
-.gallery-image:nth-child(3) img{
-  object-position:center center;
+.gallery-prev:hover,
+.gallery-next:hover {
+  background: var(--accent);
+  transform: translateY(-50%) scale(1.06);
 }
 
+/* Image indicators */
+.gallery-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.55);
+
+  cursor: pointer;
+  transition:
+    width .2s ease,
+    background .2s ease;
+}
+
+.gallery-dot.active {
+  width: 24px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+
+  .gallery-grid {
+    height: 430px;
+    border-radius: 0;
+  }
+
+  .gallery-prev,
+  .gallery-next {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+
+  .gallery-prev {
+    left: 14px;
+  }
+
+  .gallery-next {
+    right: 14px;
+  }
+
+  .gallery-dots {
+    bottom: 18px;
+  }
+}
 /* RESERVATION */
 
 .reserve-section{
