@@ -1,13 +1,15 @@
 const config = window.SITE_CONFIG || {};
+const menuData = window.MENU_DATA || {};
 
-// Apply the central config so each restaurant can be personalized without rebuilding the UI.
-const getValue = path => path.split('.').reduce((value, key) => value?.[key], config);
+const getValue = (source, path) => path.split('.').reduce((value, key) => value?.[key], source);
+
 document.querySelectorAll('[data-config]').forEach(element => {
-    const value = getValue(element.dataset.config);
+    const value = getValue(config, element.dataset.config);
     if (value !== undefined) element.innerHTML = value;
 });
+
 document.querySelectorAll('[data-config-href]').forEach(element => {
-    const value = getValue(element.dataset.configHref);
+    const value = getValue(config, element.dataset.configHref);
     if (value) element.href = `mailto:${value}`;
 });
 
@@ -27,6 +29,54 @@ if (config.hero?.image) {
     const heroImage = document.querySelector('.hero-image');
     if (heroImage) heroImage.style.backgroundImage = `url("${config.hero.image}")`;
 }
+
+function renderMenu() {
+    const grid = document.querySelector('.menu-grid');
+    if (!grid || !Array.isArray(menuData.dishes)) return;
+
+    const title = document.querySelector('#menu-title');
+    const intro = document.querySelector('.menu-section .section-heading > p');
+    if (title && menuData.intro?.title) title.innerHTML = menuData.intro.title;
+    if (intro && menuData.intro?.copy) intro.textContent = menuData.intro.copy;
+
+    grid.innerHTML = menuData.dishes.map((dish, index) => `
+        <article class="dish-card ${index === 0 ? 'featured-dish' : ''}">
+            <div class="dish-image" style="background-image:url('${dish.image}')" role="img" aria-label="${dish.name}"></div>
+            <div class="dish-info">
+                <span>${dish.category}</span>
+                <h3>${dish.name}</h3>
+                <p>${dish.description}</p>
+                <strong>${dish.price}</strong>
+            </div>
+        </article>
+    `).join('');
+}
+
+function renderStoryAndGallery() {
+    if (menuData.story) {
+        const story = document.querySelector('.story-content');
+        if (story) {
+            const eyebrow = story.querySelector('.eyebrow');
+            const heading = story.querySelector('h2');
+            const copy = story.querySelector('p:not(.eyebrow)');
+            if (eyebrow) eyebrow.textContent = menuData.story.eyebrow || '';
+            if (heading) heading.innerHTML = menuData.story.title || '';
+            if (copy) copy.textContent = menuData.story.copy || '';
+        }
+    }
+
+    if (Array.isArray(menuData.gallery)) {
+        document.querySelectorAll('.gallery-image').forEach((element, index) => {
+            const item = menuData.gallery[index];
+            if (!item) return;
+            element.style.backgroundImage = `url('${item.image}')`;
+            element.setAttribute('aria-label', item.alt || 'Restaurant image');
+        });
+    }
+}
+
+renderMenu();
+renderStoryAndGallery();
 
 const menuToggle = document.querySelector('.menu-toggle');
 const mobileNav = document.querySelector('.mobile-nav');
@@ -61,7 +111,6 @@ if (reservationForm && formNote) {
     });
 }
 
-const revealItems = document.querySelectorAll('.dish-card,.gallery-image,.story-content,.visit-grid');
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -71,7 +120,8 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'Intersect
             }
         });
     }, { threshold: 0.12 });
-    revealItems.forEach(item => {
+
+    document.querySelectorAll('.dish-card,.gallery-image,.story-content,.visit-grid').forEach(item => {
         item.classList.add('reveal');
         observer.observe(item);
     });
